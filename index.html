@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="css/reset.css" type="text/css">
+  <link rel="stylesheet" href="css/style.css" type="text/css">
+</head>
+
+<body>
+  <div id="root"></div>
+  <!-- React本体 -->
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <!-- ReactをDOMに反映させる -->
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <!-- その他のライブラリ -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    (() => {
+      const todos = [
+        { id: 0, title: 'task 0', text: 'texttext', isDone: false },
+        { id: 1, title: 'task 1', text: 'hogehogehoge', isDone: true },
+        { id: 2, title: 'task 2', text: 'fugafugafuga', isDone: false }
+      ];
+
+      function TodoItem(props) {
+        return (
+          <li key={props.todo.id}>
+            <input type="checkbox"
+              checked={props.todo.isDone}
+              onChange={() => props.checkTodo(props.todo)}
+            />
+            <label>
+              <dl>
+                <dt className={props.todo.isDone ? 'done' : ''}>
+                  {props.todo.title}
+                </dt>
+                <dd>
+                  {props.todo.text}
+                </dd>
+              </dl>
+            </label>
+            <span className="cmd" onClick={() => props.deleteTodo(props.todo)}>[X]</span>
+          </li>
+        )
+      }
+      function TodoList(props) {
+        const todos = props.todos.map(todo => {
+          return (
+            <TodoItem
+              key={todo.id}
+              todoTitle={todoTitle}
+              todoText={todoText}
+              checkTodo={props.checkTodo}
+              deleteTodo={props.deleteTodo}
+            />
+          );
+        });
+        return (
+          <ul>
+            {props.todos.length ? todos :<li>なんにもないよ</li>}
+          </ul>
+        );
+      }
+
+      function TodoForm(props){
+        return(
+          <form onSubmit={props.addTodo}>
+          <input type="text" name="title" className="title" value={props.itemTitle} onChange={props.updateItemTitle}/>
+          <textarea name="text" className="textarea" value={props.itemText} onChange={props.updateItemText}/>
+          <input type="submit" name="submit" className="submit" value="ついかする？" />
+          </form>
+        )
+      }
+
+      function getUniqueId(){
+        return new Date().getTime().toString(36) + '-' + Math.random().toString(36);
+      }
+
+      class App extends React.Component {
+        constructor() {
+          super();
+          this.state = {
+            todos: todos
+          };
+          this.checkTodo = this.checkTodo.bind(this);
+          this.deleteTodo = this.deleteTodo.bind(this);
+          this.updateItemTitle = this.updateItemTitle.bind(this);
+          this.updateItemText = this.updateItemText.bind(this);
+          this.addTodo = this.addTodo.bind(this);
+        }
+
+        addTodo(e){
+          e.preventDefault();
+
+          // const item = {
+          //   id: getUniqueId(),
+          //   title: this.state.item,
+          //   isDone: false,
+          // };
+
+          const itemTitle = {
+            id: getUniqueId(),
+            title: this.state.itemTitle,
+            isDone: false,
+          };
+
+          const itemText = {
+            id: getUniqueId(),
+            title: this.state.itemText,
+            isDone: false,
+          };
+
+          const todos = this.state.todos.slice();
+          todos.push(itemTitle);
+          todos.push(itemText);
+          this.setState({
+            todos: todos,
+            itemTitle:'',
+            itemText:''
+          });
+        }
+
+        deleteTodo(todo){
+          if(!confirm('けすけどいい？')){
+            return;
+          }
+
+          const todos = this.state.todos.slice();
+          const pos= this.state.todos.indexOf(todo);
+
+          todos.splice(pos, 1);
+          this.setState({
+          todos: todos
+          });
+          };
+
+        checkTodo(todo){
+          const todos = this.state.todos.map(todo => {
+            return {id: todo.id, title:todo.title, text:todo.text, isDone:todo.isDone};
+          });
+
+          const pos = this.state.todos.map(todo =>{
+            return todo.id;
+          }).indexOf(todo.id);
+          todos[pos].isDone = !todos[pos].isDone;
+          this.setState({
+            todos:todos
+          });
+        }
+
+        updateItemTitle(e){
+          this.setState({
+            itemTitle: e.target.value
+          });
+        }
+        updateItemText(e){
+          this.setState({
+            itemText: e.target.value
+          });
+
+        }
+
+        render() {
+          return (
+
+            <div className="container">
+              <h1>My ToDo App</h1>
+              <TodoList
+                todos={this.state.todos}
+                checkTodo={this.checkTodo}
+                deleteTodo={this.deleteTodo}
+              />
+              <TodoForm
+              itemTitle={this.state.itemTitle}
+              itemText={this.state.itemText}
+              updateItemTitle={this.updateItemTitle}
+              updateItemText={this.updateItemText}
+              addTodo={this.addTodo}
+              />
+            </div>
+          );
+        }
+      }
+      ReactDOM.render(
+        <App />,
+        document.getElementById('root')
+      );
+    })();
+  </script>
+</body>
+
+</html>

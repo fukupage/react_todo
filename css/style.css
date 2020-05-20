@@ -1,0 +1,83 @@
+@import url("https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c");
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.6rem;
+  font-family: "M PLUS Rounded 1c";
+}
+
+.container {
+  width: 60rem;
+  margin: 0 auto;
+}
+
+.container h1 {
+  text-align: center;
+  border-bottom: 2px solid #666;
+  padding: 1.0rem 0;
+}
+
+.container ul {
+  padding: 0;
+  list-style: none;
+}
+
+.container ul li {
+  line-height: 1.5rem;
+  border-bottom: 1px dotted #666;
+  padding: 0.5rem 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.container ul input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
+
+.container ul label {
+  display: block;
+}
+
+.container ul .cmd {
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #66c;
+}
+
+.container input.title, .container .textarea, .container input.submit {
+  display: block;
+  margin: auto;
+  border-radius: 0.3rem;
+  border: 1px solid #666;
+  padding: 0.5rem;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.container input.title {
+  margin: 0.5rem auto;
+  width: 100%;
+}
+
+.container .textarea {
+  margin: 0.5rem auto;
+  width: 100%;
+  height: 15rem;
+}
+
+.container input.submit {
+  margin: 0.5rem auto;
+}
+
+.done, .done + dd {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
+.done + dd {
+  display: none;
+}
+/*# sourceMappingURL=style.css.map */
